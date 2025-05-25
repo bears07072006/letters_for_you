@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Письма для тебя</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Marck+Script&family=Playfair+Display:wght@400;500&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #fff5f5;
+            color: #333;
+            font-family: 'Playfair Display', serif;
+            line-height: 1.6;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="50" font-family="Arial" font-size="30" fill="rgba(255,182,193,0.1)">🌸</text></svg>');
+            background-size: 80px;
+            background-attachment: fixed;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+            font-family: 'Marck Script', cursive;
+            color: #d23669;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .letter {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            border: 1px solid #f8e1e7;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="20" font-family="Arial" font-size="15" fill="rgba(255,182,193,0.2)">✉️</text></svg>');
+            background-repeat: no-repeat;
+            background-position: right bottom;
+        }
+        
+        .letter:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #ffb6c1, #ff69b4, #ffb6c1);
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .letter-content {
+            font-family: 'Marck Script', cursive;
+            font-size: 1.3rem;
+            color: #555;
+            line-height: 1.8;
+            text-align: center;
+        }
+        
+        .letter-line {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .first-letter {
+            color: #d23669;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+        
+        .flower {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.6;
+            z-index: -1;
+        }
+        
+        .bear {
+            position: absolute;
+            font-size: 1.8rem;
+            opacity: 0.5;
+            z-index: -1;
+        }
+        
+        .question {
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            border: 1px solid #f8e1e7;
+            text-align: center;
+        }
+        
+        .question-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .option {
+            padding: 12px 20px;
+            border: 1px solid #ffb6c1;
+            border-radius: 30px;
+            background-color: #fff;
+            color: #d23669;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+        }
+        
+        .option:hover {
+            background-color: #ffebf0;
+        }
+        
+        form {
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        button[type="submit"] {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Playfair Display', serif;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #d23669;
+        }
+        
+        .hidden-message {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.5rem;
+            color: #d23669;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 1s ease;
+            font-family: 'Marck Script', cursive;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #d23669;
+            font-size: 1.2rem;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .letter {
+                padding: 20px;
+            }
+            
+            .letter-content {
+                font-size: 1.1rem;
+            }
+            
+            .flower, .bear {
+                font-size: 1.2rem;
+            }
+            
+            .first-letter {
+                font-size: 1.2em !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Письма для тебя</h1>
+        
+        <div class="flower" style="top: 50px; left: 30px;">🌸</div>
+        <div class="bear" style="top: 120px; right: 40px;">🧸</div>
+        
+        <div class="letter">
+            <div class="letter-content">
+                <div class="letter-line"><span class="first-letter">В</span>етер принес запах страниц,</div>
+                <div class="letter-line"><span class="first-letter">С</span>крывая в них заветный миг.</div>
+                <div class="letter-line"><span class="first-letter">Е</span>щё немного — и ты поймёшь,</div>
+                <div class="letter-line"><span class="first-letter">Г</span>де светит самый нежный огонь.</div>
+                <div class="letter-line"><span class="first-letter">Д</span>авай вместе пройдём этот путь,</div>
+                <div class="letter-line"><span class="first-letter">А</span> пока — слушай своё сердце.</div>
+            </div>
+        </div>
+        
+        <div class="flower" style="top: 400px; right: 50px;">🌹</div>
+        <div class="bear" style="top: 500px; left: 20px;">🐻</div>
+        
+        <div class="letter">
+            <div class="letter-content">
+                <div class="letter-line"><span class="first-letter">Р</span>ассвет встречает нас шёпотом,</div>
+                <div class="letter-line"><span class="first-letter">Я</span>рко играет игра света.</div>
+                <div class="letter-line"><span class="first-letter">Д</span>ни меняются, но чувства —</div>
+                <div class="letter-line"><span class="first-letter">О</span>стаются в каждом взгляде.</div>
+                <div class="letter-line"><span class="first-letter">М</span>ежду строк — то, что не сказано вслух.</div>
+            </div>
+        </div>
+        
+        <div class="flower" style="top: 800px; left: 40px;">🌺</div>
+        <div class="bear" style="top: 900px; right: 30px;">🧸</div>
+        
+        <div class="letter">
+            <div class="letter-content">
+                <div class="letter-line"><span class="first-letter">М</span>ир окутан светом нежным,</div>
+                <div class="letter-line"><span class="first-letter">Е</span>два уловимым, как дыханье.</div>
+                <div class="letter-line"><span class="first-letter">Ч</span>увства наши — словно ветер,</div>
+                <div class="letter-line"><span class="first-letter">Т</span>анец лёгкий в тишине ночи.</div>
+                <div class="letter-line"><span class="first-letter">А</span> сердце шепчет: «Ты моя мечта».</div>
+            </div>
+        </div>
+        
+        <div class="flower" style="top: 1200px; right: 60px;">🌼</div>
+        
+        <div class="question">
+            <div class="question-text">
+                Иногда слова не нужны,<br>
+                а чувства — самые честные письма.<br>
+                Что тебе сейчас ближе всего?<br>
+                Выбери то, что отозвалось в сердце.
+            </div>
+            
+            <div class="options">
+                <div class="option" data-option="Тепло — когда хочется верить и ждать.">Тепло — хочется верить и ждать.</div>
+                <div class="option" data-option="Сомнения — когда всё ещё ищу ответы.">Сомнения — всё ещё ищу ответы.</div>
+                <div class="option" data-option="Любопытство — когда хочется понять больше.">Любопытство — хочется понять больше.</div>
+            </div>
+            
+            <form id="responseForm" action="https://formsubmit.co/YOUR_EMAIL_HERE" method="POST">
+                <input type="hidden" name="_subject" value="Ответ на письма">
+                <input type="hidden" name="response" id="selectedOption" value="">
+                <button type="submit">Отправить ответ</button>
+            </form>
+            <div class="success-message">✓ Ответ принят</div>
+        </div>
+        
+        <div class="hidden-message" id="hiddenMessage"></div>
+        
+        <div class="bear" style="top: 1500px; left: 50px;">🐾</div>
+    </div>
+    
+    <script>
+        // Обработка выбора варианта ответа
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const selectedText = this.getAttribute('data-option');
+                document.getElementById('selectedOption').value = selectedText;
+                document.getElementById('responseForm').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Обновленная обработка первых букв для мобильных устройств
+        const handleLetterInteraction = (letter) => {
+            letter.style.opacity = '1';
+            letter.style.fontSize = '1.5em';
+            setTimeout(() => {
+                letter.style.opacity = '0.7';
+                letter.style.fontSize = '1em';
+            }, 500);
+        };
+
+        document.querySelectorAll('.first-letter').forEach(letter => {
+            // Для десктопов
+            letter.addEventListener('mouseover', () => handleLetterInteraction(letter));
+            letter.addEventListener('mouseout', () => {
+                letter.style.opacity = '0.7';
+                letter.style.fontSize = '1em';
+            });
+            
+            // Для мобильных устройств
+            letter.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                handleLetterInteraction(letter);
+            });
+        });
+
+        // Проверка собранного послания
+        let clickedLetters = 0;
+        const totalLetters = document.querySelectorAll('.first-letter').length;
+        const hiddenMessage = "Ты прекрасна";
+
+        document.querySelectorAll('.first-letter').forEach(letter => {
+            letter.addEventListener('click', function() {
+                if (this.style.color !== 'gold') {
+                    this.style.color = 'gold';
+                    this.style.textShadow = '0 0 5px #ff69b4';
+                    clickedLetters++;
+                    
+                    if (clickedLetters === totalLetters) {
+                        document.getElementById('hiddenMessage').textContent = hiddenMessage;
+                        document.getElementById('hiddenMessage').style.opacity = '1';
+                        setTimeout(() => {
+                            document.getElementById('hiddenMessage').scrollIntoView({ behavior: 'smooth' });
+                        }, 500);
+                    }
+                }
+            });
+        });
+
+        // Отправка формы без перезагрузки страницы
+        document.getElementById('responseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const successMessage = form.nextElementSibling;
+            
+            try {
+                await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                });
+                
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                alert('Произошла ошибка при отправке. Попробуйте ещё раз.');
+            }
+        });
+
+        // Случайное размещение декоративных элементов
+        function decoratePage() {
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            const flowers = ['🌸', '🌹', '🌺', '🌻', '🌼', '🌷'];
+            const bears = ['🧸', '🐻', '🐾', '❤️'];
+            
+            // Добавление цветов
+            for (let i = 0; i < 12; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+                flower.style.top = `${Math.random() * containerRect.height}px`;
+                flower.style.left = `${20 + Math.random() * (containerRect.width - 40)}px`;
+                flower.style.opacity = 0.3 + Math.random() * 0.4;
+                flower.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.7 + Math.random() * 0.6})`;
+                container.appendChild(flower);
+            }
+            
+            // Добавление мишек
+            for (let i = 0; i < 10; i++) {
+                const bear = document.createElement('div');
+                bear.className = 'bear';
+                bear.textContent = bears[Math.floor(Math.random() * bears.length)];
+                bear.style.top = `${Math.random() * containerRect.height}px`;
+                bear.style.left = `${20 + Math.random() * (containerRect.width - 40)}px`;
+                bear.style.opacity = 0.3 + Math.random() * 0.4;
+                bear.style.transform = `scale(${0.7 + Math.random() * 0.6})`;
+                container.appendChild(bear);
+            }
+        }
+
+        window.addEventListener('load', decoratePage);
+    </script>
+</body>
+</html>
